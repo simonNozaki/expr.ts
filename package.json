@@ -1,5 +1,5 @@
 {
-  "name": "expression.ts",
+  "name": "expr.ts",
   "version": "0.0.1",
   "description": "TypeScript statement wrappers",
   "main": "dist/src/index.js",
