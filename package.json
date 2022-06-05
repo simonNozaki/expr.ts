@@ -1,0 +1,34 @@
+{
+  "name": "expression.ts",
+  "version": "0.0.1",
+  "description": "TypeScript statement wrappers",
+  "main": "dist/src/index.js",
+  "files": ["dist"],
+  "scripts": {
+    "docs": "npx typedoc --out docs src",
+    "assemble": "npx tsc",
+    "build": "npx jest && npm run docs && npm run assemble",
+    "test": "./node_modules/.bin/jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonNozaki/expression.ts.git"
+  },
+  "keywords": [
+    "expression",
+    "functional programming"
+  ],
+  "author": "Simon Nozaki<tldk1993@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^28.1.1",
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/parser": "^5.27.0",
+    "eslint": "^8.17.0",
+    "eslint-config-google": "^0.14.0",
+    "jest": "^28.1.0",
+    "ts-jest": "^28.0.4",
+    "typedoc": "^0.22.17",
+    "typescript": "^4.7.3"
+  }
+}
