@@ -34,8 +34,12 @@ export const Try = <T>(f: () => T, ...catches: ExpressionState<T>[]): T => {
  * @param {()} f Consumer to be executed
  * @return {T} Expression state of catch expression.
  */
-export const Catch = <T>(e: typeof Error, f: (e?: Error) => T)
-: ExpressionState<T> => ({
-    e: e,
+export const Catch = <T, E extends Error | Error>(
+  e: {new (): E}, f: (e?: E) => T,
+)
+: ExpressionState<T> => {
+  return {
+    e: typeof e,
     f: f,
-  });
+  };
+};
