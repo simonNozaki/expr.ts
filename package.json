@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "TypeScript statement wrappers",
   "main": "dist/src/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "docs": "npx typedoc --out docs src",
     "assemble": "npx tsc",
@@ -29,6 +31,7 @@
     "jest": "^28.1.0",
     "ts-jest": "^28.0.4",
     "typedoc": "^0.22.17",
+    "typedoc-plugin-markdown": "^3.12.1",
     "typescript": "^4.7.3"
   }
 }
