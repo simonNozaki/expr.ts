@@ -1,7 +1,7 @@
-# Expression.ts
+# Expr.ts
 A simple wrapping library that treats common `if`, `try-catch`, etc. statements as expressions.
 
-# mental model
+# Mental model
 It is preferable to be able to handle the result of a process immutably. With the recent increase in computing resources, many variables can be kept in memory, allowing programming with an emphasis on immutability.
 
 In general, allowing mutable variables makes control of the process complicated and makes it extremely difficult to understand the state of the variables.
