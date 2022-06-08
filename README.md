@@ -16,4 +16,16 @@ val a: Int? = try { input.toInt() } catch (e: NumberFormatException) { null }
 Quote: https://kotlinlang.org/docs/exceptions.html#try-is-an-expression
 
 # Usage
+## try-catch
+### Basic usage
+```typescript
+const r = doOnTry(() => (new ErrorService().execute()),
+        recover(Error.prototype, (e: Error) => ('DEFAULT')))
+```
 
+## if-else
+### Basic usage
+```typescript
+const r = If(base.length > 30, () => 'over 30')
+        .else(() => 'under 30')
+```
