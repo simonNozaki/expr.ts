@@ -1,6 +1,6 @@
 {
   "name": "expr.ts",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "TypeScript statement wrappers",
   "main": "dist/src/index.js",
   "files": [
