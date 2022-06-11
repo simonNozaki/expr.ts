@@ -1,48 +1,16 @@
-[expression.ts](README.md) / Exports
+[expr.ts](README.md) / Exports
 
-# expression.ts
+# expr.ts
 
 ## Table of contents
 
 ### Functions
 
-- [Catch](modules.md#catch)
 - [If](modules.md#if)
-- [Try](modules.md#try)
+- [doOnTry](modules.md#doontry)
+- [recover](modules.md#recover)
 
 ## Functions
-
-### Catch
-
-▸ **Catch**<`T`\>(`e`, `f`): `ExpressionState`<`T`\>
-
-`catch` expression. This function enclose target error type
-and error handler.
-
-#### Type parameters
-
-| Name |
-| :------ |
-| `T` |
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `e` | `ErrorConstructor` | Error type infomation to handle. |
-| `f` | (`e?`: `Error`) => `T` | Consumer to be executed |
-
-#### Returns
-
-`ExpressionState`<`T`\>
-
-Expression state of catch expression.
-
-#### Defined in
-
-[try.ts:37](https://github.com/simonNozaki/expression.ts/blob/e2e8c99/src/try.ts#L37)
-
-___
 
 ### If
 
@@ -71,13 +39,13 @@ Wrapper for expression
 
 #### Defined in
 
-[if.ts:12](https://github.com/simonNozaki/expression.ts/blob/e2e8c99/src/if.ts#L12)
+[if.ts:12](https://github.com/simonNozaki/expression.ts/blob/d3cd5c4/src/if.ts#L12)
 
 ___
 
-### Try
+### doOnTry
 
-▸ **Try**<`T`\>(`f`, ...`catches`): `T`
+▸ **doOnTry**<`T`\>(`f`, ...`catches`): `T`
 
 `try` expression. This function controls a try and handling exception.
 
@@ -102,4 +70,50 @@ t
 
 #### Defined in
 
-[try.ts:16](https://github.com/simonNozaki/expression.ts/blob/e2e8c99/src/try.ts#L16)
+[try.ts:16](https://github.com/simonNozaki/expression.ts/blob/d3cd5c4/src/try.ts#L16)
+
+___
+
+### recover
+
+▸ **recover**<`T`, `E`\>(`e`, `f`): `ExpressionState`<`T`\>
+
+`catch` expression. This function enclose target error type
+and error handler.
+`doOnTry` expression can handle some `recover` functions like
+try-catch statement as we know, written below:
+```
+try {
+  execute();
+} catch (IllegalArgumentException iae) {
+  handleIllegalArgumentException();
+} catch (FileNotFoundException fnf) {
+  handleFileNotFoundException();
+} catch (Exception e) {
+  handleException();
+}
+```
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | `T` |
+| `E` | extends `Error` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `e` | `E` | Error type infomation to handle. |
+| `f` | (`e`: `E`) => `T` | Consumer to be executed |
+
+#### Returns
+
+`ExpressionState`<`T`\>
+
+Expression state of catch expression.
+
+#### Defined in
+
+[try.ts:50](https://github.com/simonNozaki/expression.ts/blob/d3cd5c4/src/try.ts#L50)

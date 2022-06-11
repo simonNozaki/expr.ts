@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Catch = exports.Try = exports.If = void 0;
+exports.recover = exports.doOnTry = exports.If = void 0;
 var if_1 = require("./if");
 Object.defineProperty(exports, "If", { enumerable: true, get: function () { return if_1.If; } });
 var try_1 = require("./try");
-Object.defineProperty(exports, "Try", { enumerable: true, get: function () { return try_1.Try; } });
-Object.defineProperty(exports, "Catch", { enumerable: true, get: function () { return try_1.Catch; } });
+Object.defineProperty(exports, "doOnTry", { enumerable: true, get: function () { return try_1.doOnTry; } });
+Object.defineProperty(exports, "recover", { enumerable: true, get: function () { return try_1.recover; } });
 //# sourceMappingURL=index.js.map

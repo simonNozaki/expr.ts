@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Catch = exports.Try = void 0;
-var Try = function (f) {
+exports.recover = exports.doOnTry = void 0;
+var doOnTry = function (f) {
     var catches = [];
     for (var _i = 1; _i < arguments.length; _i++) {
         catches[_i - 1] = arguments[_i];
@@ -10,19 +10,20 @@ var Try = function (f) {
         return f();
     }
     catch (e) {
-        for (var i = 0; i < catches.length; i++) {
-            var expr = catches[i];
-            if (e instanceof expr.e) {
-                return expr.f(e);
-            }
+        if (!(e instanceof Error)) {
+            throw e;
         }
-        throw e;
+        return catches
+            .find(function (c) { return c.e.name === e.name; })
+            .f(e);
     }
 };
-exports.Try = Try;
-var Catch = function (e, f) { return ({
-    e: e,
-    f: f,
-}); };
-exports.Catch = Catch;
+exports.doOnTry = doOnTry;
+var recover = function (e, f) {
+    return {
+        e: e,
+        f: f,
+    };
+};
+exports.recover = recover;
 //# sourceMappingURL=try.js.map
