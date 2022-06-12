@@ -3,6 +3,8 @@
  */
 type BasicExpression<T> = () => T;
 
+type ConditionFunctionPair<T> = [boolean, BasicExpression<T>];
+
 /**
  * `if` expression.
  * @param {boolean} condition
@@ -25,9 +27,24 @@ class Evaluator<T> {
    * if condition is true.
    */
   constructor(
-    private condition: boolean,
-    private block: BasicExpression<T>,
-  ) {}
+      condition: boolean,
+      block: BasicExpression<T>,
+  ) {
+    this.condtionFunctions.push([condition, block]);
+  }
+
+  private readonly condtionFunctions: ConditionFunctionPair<T>[] = [];
+
+  /**
+   * `else if` statement.
+   * @param {boolean} condition
+   * @param {Functions} block
+   * @return {Evaluator<T>}
+   */
+  elseIf(condition: boolean, block: BasicExpression<T>): Evaluator<T> {
+    this.condtionFunctions.push([condition, block]);
+    return this;
+  }
 
   /**
    * `else` expression. Original expression and alternative is evaluated here.
@@ -36,20 +53,13 @@ class Evaluator<T> {
    * @return {T} value that is evaluated
    */
   else(alternative: BasicExpression<T>): T {
-    return this.evaluate(alternative);
-  }
-
-  /**
-   * Evaluate
-   * @param {BasicExpression<T>} alternative alternative to execute
-   * @return {T} The result of function executed
-   */
-  private evaluate(alternative: BasicExpression<T>): T {
-    if (this.condition) {
-      return this.block();
-    } else {
-      return alternative();
+    // last element should be evaluated as true.
+    this.condtionFunctions.push([true, alternative]);
+    for (const pair of this.condtionFunctions) {
+      if (pair[0]) {
+        return pair[1]();
+      }
     }
+    throw new Error('All conditions was not matched');
   }
 }
-
