@@ -39,7 +39,7 @@ Wrapper for expression
 
 #### Defined in
 
-[if.ts:12](https://github.com/simonNozaki/expression.ts/blob/d3cd5c4/src/if.ts#L12)
+[if.ts:14](https://github.com/simonNozaki/expr.ts/blob/49318a6/src/if.ts#L14)
 
 ___
 
@@ -70,7 +70,7 @@ t
 
 #### Defined in
 
-[try.ts:16](https://github.com/simonNozaki/expression.ts/blob/d3cd5c4/src/try.ts#L16)
+[try.ts:16](https://github.com/simonNozaki/expr.ts/blob/49318a6/src/try.ts#L16)
 
 ___
 
@@ -116,4 +116,4 @@ Expression state of catch expression.
 
 #### Defined in
 
-[try.ts:50](https://github.com/simonNozaki/expression.ts/blob/d3cd5c4/src/try.ts#L50)
+[try.ts:50](https://github.com/simonNozaki/expr.ts/blob/49318a6/src/try.ts#L50)
