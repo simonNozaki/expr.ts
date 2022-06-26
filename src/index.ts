@@ -1,2 +1,2 @@
 export {If} from './if';
-export {doOnTry, recover} from './try';
+export {attempt, recover, lastly} from './try';

@@ -1,11 +1,48 @@
 /**
  * Expression closure definition.
  */
-type ExpressionState<T> = {
-  e: Error,
+type ExpressionState<T, E extends Error> = {
+  e: new (message?: string) => E,
   f: (e: Error) => T
 }
 
+/**
+ * Finally Clause state definition.
+ */
+type LastlyState = {
+  e: never,
+  f: () => void
+}
+
+/**
+ * Union type that is recover or lastly.
+ */
+type IntermediateState<T, E extends Error> = ExpressionState<T, E> |
+LastlyState
+
+/**
+ * Type definition guard for `lastly`
+ * @param {any} arg
+ * @return {boolean}
+ */
+const isLastly = (arg?: any): arg is LastlyState => {
+  return arg && arg.f !== undefined;
+};
+
+/**
+ * Type definition guard for `recover`
+ * @param {any} arg
+ * @return {boolean}
+ */
+const isRecover = <T, E extends Error>(arg?: unknown)
+: arg is ExpressionState<T, E> => {
+  if (!arg) {
+    return false;
+  }
+  const d = arg as ExpressionState<T, E>;
+
+  return typeof d.e === 'function' && typeof d.f === 'function';
+};
 
 /**
  * `try` expression. This function controls a try and handling exception.
@@ -13,7 +50,9 @@ type ExpressionState<T> = {
  * @param {...ExpressionState<T>[]} catches `catch` expressions
  * @return {T} t
  */
-export const doOnTry = <T>(f: () => T, ...catches: ExpressionState<T>[]): T => {
+export const attempt = <T, E extends Error>(
+  f: () => T, ...catches: IntermediateState<T, E>[]
+): T => {
   try {
     return f();
   } catch (e) {
@@ -21,16 +60,24 @@ export const doOnTry = <T>(f: () => T, ...catches: ExpressionState<T>[]): T => {
       throw e;
     }
 
-    return catches
-        .find((c) => c.e.name === e.name)
-        .f(e);
+    const last = catches.filter((c) => isLastly(c));
+    const catcher = catches
+        .filter((c) => isRecover(c))
+        .find((c) => c.e.name === e.name);
+    // finally
+    if (last.length > 0) {
+      const lastly = last[0] as LastlyState;
+      lastly.f();
+    }
+
+    return (catcher as ExpressionState<T, E>).f(e);
   }
 };
 
 /**
  * `catch` expression. This function enclose target error type
  * and error handler.
- * `doOnTry` expression can handle some `recover` functions like
+ * `attempt` expression can handle some `recover` functions like
  * try-catch statement as we know, written below:
  * ```
  * try {
@@ -48,11 +95,24 @@ export const doOnTry = <T>(f: () => T, ...catches: ExpressionState<T>[]): T => {
  * @return {T} Expression state of catch expression.
  */
 export const recover = <T, E extends Error>(
-  e: E, f: (e: E) => T,
+  e: new (message?: string) => E, f: (e: E) => T,
 )
-: ExpressionState<T> => {
+: ExpressionState<T, E> => {
   return {
     e: e,
+    f: f,
+  };
+};
+
+/**
+ * Equivalent to `finally` clause. This can be executed
+ * only once on a `attempt`.
+ * @param {Function} f
+ * @return {LastlyState}
+ */
+export const lastly = (f: () => void): LastlyState => {
+  return {
+    e: 0 as never,
     f: f,
   };
 };
