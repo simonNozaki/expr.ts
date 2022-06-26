@@ -1,4 +1,4 @@
-import {doOnTry, recover} from '../src';
+import {attempt, recover, lastly} from '../src';
 
 describe('Try tests', () => {
   /**
@@ -20,18 +20,31 @@ describe('Try tests', () => {
   }
 
   it('can catch Error', () => {
-    const s = doOnTry(() => (new ErrorService().execute()),
-        recover(Error.prototype, (e: Error) => ('DEFAULT')));
+    const s = attempt(() => (new ErrorService().execute()),
+        recover(Error, (e: Error) => ('DEFAULT')));
 
     expect(s).toBe('DEFAULT');
   });
 
   it('can catch URI Error', () => {
-    const s = doOnTry(() => (new ErrorService().executeUri()),
-        recover(URIError.prototype, (e: URIError) => ('URI Error')),
-        recover(Error.prototype, (e: Error) => ('DEFAULT')));
+    const s = attempt(() => (new ErrorService().executeUri()),
+        recover(URIError, (e: URIError) => ('URI Error')),
+        recover(Error, (e: Error) => ('DEFAULT')));
 
     expect(s).toBe('URI Error');
+  });
+
+  it('is executed lastly', () => {
+    const s = attempt(() => (new ErrorService().execute()),
+        recover(Error, (e: Error) => {
+          console.log(e);
+          console.log(e instanceof Error);
+          return 'Error';
+        }),
+        lastly(() => {
+          console.log('Attempted');
+        }));
+    expect(s).toBe('Error');
   });
 });
 
