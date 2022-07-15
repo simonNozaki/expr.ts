@@ -1,4 +1,4 @@
-# Expr.ts
+# Expressionify
 A simple wrapping library that treats common `if`, `try-catch`, etc. statements as expressions.
 
 # Mental model
@@ -13,19 +13,60 @@ For reference, Kotlin can handle try-catch and if as expressions as follows.
 val a: Int? = try { input.toInt() } catch (e: NumberFormatException) { null }
 ```
 
-Quote: https://kotlinlang.org/docs/exceptions.html#try-is-an-expression
+Reference: https://kotlinlang.org/docs/exceptions.html#try-is-an-expression
 
 # Usage
+At this time, this package provide only 2 functions: try-catch and if-else.
+
 ## try-catch
 ### Basic usage
 ```typescript
-const r = doOnTry(() => (new ErrorService().execute()),
-        recover(Error.prototype, (e: Error) => ('DEFAULT')))
+const r: string = attempt(() => (new ErrorService().execute()),
+        recover(Error, (e: Error) => ('DEFAULT')))
+```
+
+### Multiple catching
+If `executeUri()` throws `URIError`, evaluate and return `'URI Error'`.
+
+```typescript
+const s: string = attempt(() => (new ErrorService().executeUri()),
+        recover(URIError, (e: URIError) => ('URI Error')),
+        recover(Error, (e: Error) => ('DEFAULT')));
+
+console.log(s); // => 'URI Error'
+```
+
+### Finally clause
+`lastly` processes a function that do some recovery "fianally".
+
+```typescript
+const s: string = attempt(() => (new ErrorService().execute()),
+        recover(Error, (e: Error) => {
+          return 'ERROR';
+        }),
+        lastly(() => {
+          console.log('Attempted');
+        }));
+
+console.log(s); // => 'ERROR'
 ```
 
 ## if-else
+if-else expression have to be finalized with `else` function. This triggers an evaluation of input conditions.
+
 ### Basic usage
 ```typescript
 const r = If(base.length > 30, () => 'over 30')
         .else(() => 'under 30')
+```
+
+### elseIf
+if-else can insert `elseIf` function intermediately.
+
+```typescript
+const result = new StatusFindService().execute();
+const res = If(result === '0', () => ({message: 'success'}))
+    .elseIf(result === '5', () => ({message: 'not found'}))
+    .else(() => ({message: 'failure'}));
+console.log(res); // => ({message: 'not found'});
 ```
