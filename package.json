@@ -1,6 +1,6 @@
 {
-  "name": "expr.ts",
-  "version": "0.1.1",
+  "name": "expressionify",
+  "version": "0.1.0",
   "description": "TypeScript statement wrappers",
   "main": "dist/src/index.js",
   "files": [
@@ -14,11 +14,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/simonNozaki/expression.ts.git"
+    "url": "git+https://github.com/simonNozaki/expressionify.git"
   },
   "keywords": [
     "expression",
-    "functional programming"
+    "functional programming",
+    "typescript"
   ],
   "author": "Simon Nozaki<tldk1993@gmail.com>",
   "license": "MIT",
